@@ -13,5 +13,5 @@ public class ProblemVO {
 	private Date update_date;
 	private String user_id;
 	private String user_name;
-	private String problem_type;
+	private char problem_type;
 }
