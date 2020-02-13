@@ -24,7 +24,7 @@ create table tbl_problem(
 	problem_content varchar(4000) not null,
 	reg_date datetime default current_timestamp,
 	update_date datetime default current_timestamp,
-	user_id varchar(50) not null unique,
+	user_id varchar(50),
 	user_name varchar(50) not null,
 	problem_type char(1) not null,
 	foreign key (user_id) references tbl_member(user_id)

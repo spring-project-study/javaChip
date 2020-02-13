@@ -1,6 +1,6 @@
 package org.javachip.mapper;
 
-import org.javachip.domain.ProblemVO;
+import org.javachip.domain.MultipleChoiceVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,29 +11,18 @@ import lombok.extern.log4j.Log4j;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {org.javachip.config.RootConfig.class} )
-@Log4j	
-public class ProblemMapperTests {
+@Log4j
+public class MultipleChoiceTests {
 	
 	@Autowired
-	ProblemMapper mapper;
+	MultipleChoiceMapper mapper;
 	
-	//@Test
+	@Test
 	public void insertTest() {
-		ProblemVO vo = new ProblemVO();
+		MultipleChoiceVO vo = new MultipleChoiceVO();
+		vo.setChk_answer(true);
+		vo.setChoice_content("내용입니다.");
 		
-		mapper.insert(vo);
-	}
-	
-	//@Test
-	public void getTest() {
-		System.out.println(mapper.select(1));
+		System.out.println("genkey" + vo.getChoice_id());
 	}
 }
-
-
-
-
-
-
-
-
