@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function(){
 			alert("적어도 보기는 2개 이상이어야 합니다.");
 			return null;
 		}
-		if(ansCount == 0){
+		if(ansCount == 0){	
 			alert("적어도 정답은 1개 이상이어야 합니다.");
 			return null;
 		}
@@ -270,7 +270,14 @@ document.addEventListener("DOMContentLoaded", function(){
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState === XMLHttpRequest.DONE){
 				if(xhr.status === 200){
-					eval(xhr.responseText);
+					var result = JSON.parse(xhr.responseText).result;
+					if(result === "success"){
+						alert("문제 등록 성공!");
+						location.href = "problem/list";
+					}
+					else if(result === "fail"){
+						alert("문제 등록 실패! 잠시 후 다시 시도해주세요.");
+					}
 				}
 			}
 		};
