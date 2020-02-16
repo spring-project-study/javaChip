@@ -5,16 +5,14 @@ import java.util.List;
 
 import org.javachip.domain.MultipleChoiceVO;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import lombok.extern.log4j.Log4j;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {org.javachip.config.RootConfig.class} )
-@Log4j	
+@Log4j
 public class MultipleChoiceServiceTests {
 
 	@Autowired
@@ -26,11 +24,11 @@ public class MultipleChoiceServiceTests {
 		MultipleChoiceVO vo = new MultipleChoiceVO();
 		vo.setProblem_id(2);
 		vo.setChk_answer(true);
-		vo.setChoice_content("º¸±â1");
+		vo.setChoice_content("ï¿½ï¿½ï¿½ï¿½1");
 		list.add(vo);
 		vo.setProblem_id(-1);
 		vo.setChk_answer(false);
-		vo.setChoice_content("º¸±â2");
+		vo.setChoice_content("ï¿½ï¿½ï¿½ï¿½2");
 		list.add(vo);
 		
 	}

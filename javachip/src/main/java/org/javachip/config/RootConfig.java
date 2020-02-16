@@ -23,7 +23,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @MapperScan(basePackages= {"org.javachip.mapper"})
 @ComponentScan(basePackages= { "org.javachip.service"})
-@PropertySource("classpath:mysql.properties")
+@PropertySource("classpath:database.properties")
 @EnableTransactionManagement
 public class RootConfig implements TransactionManagementConfigurer{
 	

@@ -10,7 +10,7 @@ public interface ProblemService {
 	public ProblemVO get(Long problem_id);
 	public boolean remove(Long problem_id);
 	public ProblemVO registerMultipleChoice(ProblemVO problem_vo, List<MultipleChoiceVO> choice_vo_list);
-	public ProblemVO registerShortAnswer(ProblemVO problem_vo, List<ShortAnswerVO> short_answer_vo);
+	public ProblemVO registerShortAnswer(ProblemVO problem_vo, List<ShortAnswerVO> short_answer_list);
 	public boolean modify(ProblemVO vo);
 	
 }

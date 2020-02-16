@@ -20,7 +20,7 @@ public class ProblemServiceImpl implements ProblemService{
 	@Autowired
 	MultipleChoiceService multipleChoiceService;
 	@Autowired
-	ShortAnswerMapper shortAnswerMapper;
+	ShortAnswerService shortAnswerService;
 	
 	@Override
 	public ProblemVO get(Long problem_id) {
@@ -31,7 +31,12 @@ public class ProblemServiceImpl implements ProblemService{
 	public boolean remove(Long problem_id) {
 		return problemMapper.delete(problem_id) > 0 ? true : false;
 	}
-
+	
+	@Override
+	public boolean modify(ProblemVO vo) {
+		return problemMapper.update(vo) > 0 ? true : false;
+	}
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public ProblemVO registerMultipleChoice(ProblemVO problem_vo, List<MultipleChoiceVO> choice_vo_list) {
@@ -46,17 +51,15 @@ public class ProblemServiceImpl implements ProblemService{
 	}
 	
 	@Override
-	public boolean modify(ProblemVO vo) {
-		return problemMapper.update(vo) > 0 ? true : false;
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public ProblemVO registerShortAnswer(ProblemVO problem_vo, List<ShortAnswerVO> short_answer_list) {
+		try{
+			problemMapper.insert(problem_vo);
+			shortAnswerService.registerListWithProblemId(short_answer_list, problem_vo.getProblem_id());
+			return problem_vo;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
-
-	@Override
-	public ProblemVO registerShortAnswer(ProblemVO problem_vo, List<ShortAnswerVO> short_answer_vo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	
-
 }

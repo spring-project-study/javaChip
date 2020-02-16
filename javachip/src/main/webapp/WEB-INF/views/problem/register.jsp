@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=utf-8"  pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -38,7 +39,7 @@
 #short-answer{
 	display : none;
 }
-#choice-container{
+.choice-answer-table{
 	width : 80%;
 	margin : 0px auto;
 	border : 0.25rem solid rgba(230,230,230);
@@ -53,11 +54,15 @@
 	box-sizing: border-box;
 	width : 100%;
 }
+.answer-content-text{
+	box-sizing : border-box;
+	width : 100%;
+}
 .choice-content-checkbox{
 	transform : scale(2);
 	box-sizing: border-box;
 }
-.choice-content-button{
+.choice-answer-content-button{
 	color: rgba(0,0,0,0.75) !important;
 	background-color : #FFF;
 	margin : 0px !important;
@@ -68,13 +73,13 @@
 	border-radius: 0.5rem;
 	box-sizing: border-box;
 }
-.choice-content-button:hover {
+.choice-answer-content-button:hover {
   background-color: #AAA;
   border-color : #000;
   text-decoration: none;	
 }
 
-.choice-content-button:active {
+.choice-answer-content-button:active {
   background-color: #555 !important;
   border-color : #000 !important;
   text-decoration: none !important;
@@ -114,7 +119,7 @@
 	   	<p class="text-white-50 font-weight-bold mt-5">내용</p>
 	   	<textarea class="problem-content-con text-black-50" id="problem-content" rows=20></textarea>
 		<div id="multiple-choice">
-		   	<table id="choice-container" border="1">
+		   	<table class="choice-answer-table" border="1">
 				<thead>
 					<tr>
 				   		<th class="text-white-50 font-weight-bold mt-5">보기</th>
@@ -127,18 +132,35 @@
 						<td><input type="text" class="choice-content-text text-black-50" /></td>
 						<td><input type="checkbox" class="choice-content-checkbox" /></td>
 						<td>
-						<a class="btn btn-primary choice-content-button" id="plus"> + </a>
-						<a class="btn btn-primary choice-content-button" id="minus"> - </a>
+						<a class="btn btn-primary choice-answer-content-button" id="plus"> + </a>
+						<a class="btn btn-primary choice-answer-content-button" id="minus"> - </a>
 						</td>
 					</tr>
 				</tbody>
 		   	</table>
 		</div>
-
-	   	<div id="short-answer">
-	   		<p class="text-white-50 font-weight-bold mt-5">정답</p>
-	   		<input type="text" id="short-answer-text" class="text-black-50"  />
-	   	</div>
+		
+		<div id="short-answer">
+			<table class="choice-answer-table" border="1">
+				<thead>
+					<tr>
+				   		<th class="text-white-50 font-weight-bold mt-5">정답</th>
+				   		<th class="text-white-50 font-weight-bold mt-5">추가/제거</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr class="answer-content">
+						<td><input type="text" class="answer-content-text text-black-50" /></td>
+						<td>
+							<a class="btn btn-primary choice-answer-content-button" id="plus"> + </a>
+							<a class="btn btn-primary choice-answer-content-button" id="minus"> - </a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	   	
 	   	
 	   	<section id="button-container">
 	   		<a class="btn btn-primary" id="problem-register-btn">문제등록</a>	
@@ -153,19 +175,32 @@
 		<td><input type="text" class="choice-content-text text-black-50" /></td>
 		<td><input type="checkbox" class="choice-content-checkbox" /></td>
 		<td>
-			<a class="btn btn-primary choice-content-button" id="plus"> + </a>
-			<a class="btn btn-primary choice-content-button" id="minus"> - </a>
+			<a class="btn btn-primary choice-answer-content-button" id="plus"> + </a>
+			<a class="btn btn-primary choice-answer-content-button" id="minus"> - </a>
+		</td>
+	</tr>
+</script>
+
+<script id=answer-template type=text/template>
+	<tr class="answer-content">
+		<td><input type="text" class="answer-content-text text-black-50" /></td>
+		<td>
+			<a class="btn btn-primary choice-answer-content-button" id="plus"> + </a>
+			<a class="btn btn-primary choice-answer-content-button" id="minus"> - </a>
 		</td>
 	</tr>
 </script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
+	const MAXCOUNT = 6;
 	var choiceCount = 1;
-	var status = 'm';
+	var answerCount = 1;
 	var radioBtnList = document.querySelectorAll(".radio-btn");
 	var mBtn = radioBtnList[0];
 	var sBtn= radioBtnList[1];
+	var status = mBtn.checked?'m':'s';
+	
 	mBtn.addEventListener("click", function(evt){
 		if(status==='m') return;
 		status = 'm';
@@ -184,34 +219,90 @@ document.addEventListener("DOMContentLoaded", function(){
 		shortContainer.style.display = "block";
 	});
 	
-	var tableBody = document.querySelector("#choice-container > tbody");
-	tableBody.addEventListener("click", function(evt){
+	var mutipleChoiceTableBody = document.querySelector("#multiple-choice tbody");
+	var shortAnswerTableBody = document.querySelector("#short-answer  tbody");
+	mutipleChoiceTableBody.addEventListener("click", tableBodyClick);
+	shortAnswerTableBody.addEventListener("click", tableBodyClick);
+	
+	function tableBodyClick(evt){
 		var tagName = evt.target.tagName;
 		if(tagName!=="A") return;
 		var buttonType = evt.target.getAttribute("id");
 		if(buttonType === "plus") appendTableRow(evt.target);
 		else if(buttonType === "minus") removeTableRow(evt.target);
-	});
+	}
 	
 	function appendTableRow(btn){
-		if(choiceCount>=6){
- 			alert("보기는 6개 까지 추가 가능합니다.");
+		var templateHTML, currentCount;
+		if(status==='m'){
+			currentCount = choiceCount;
+			templateHTML = document.querySelector("#choice-template").innerText;
+		}
+		else {
+			currentCount = answerCount;
+			templateHTML = document.querySelector("#answer-template").innerText;
+		}
+		if(currentCount>=MAXCOUNT){
+			alert(`최대 {MAXCOUNT}개 까지 추가 가능합니다.`);
  			return;
- 		}
-		var templateHTML = document.querySelector("#choice-template").innerText;
+		}
 		var clickedRow = btn.closest("tr");
 		clickedRow.insertAdjacentHTML("afterend", templateHTML);
-		++choiceCount;
+		if(status==='m') ++choiceCount;
+		else ++answerCount;
 	}
 	
 	function removeTableRow(btn){
-		if(choiceCount<=1){
-			alert("보기는 적어도 1개 있어야 합니다.")
+		var currentCount;
+		if(status==='m') currentCount = choiceCount;
+		else currentCount = answerCount;
+		
+		if(currentCount<=1){
+			alert("적어도 1개 있어야 합니다.")
 			return;
 		}
 		var deleteRow = btn.closest("tr");
 		tableBody.removeChild(deleteRow);
-		--choiceCount;
+		if(status==='m') --choiceCount;
+		else --answerCount;
+	}
+	
+	var registerBtn = document.querySelector("#problem-register-btn");
+	registerBtn.addEventListener("click", function(){
+		var dto, url;
+		if(status === 'm'){
+			dto = makeMultipleChoiceDto(); 
+			url = "problem/multiplechoice";
+		}
+		else if(status === 's'){
+			dto = makeShortAnswerDto();
+			url = "problem/shortanswer";
+		}
+		console.log(dto, url);
+		if(dto==null) return;
+		sendAjaxRegisterBtn(dto, url);
+	});
+	
+	function makeMultipleChoiceDto(){
+		var problemObj = makeProblemObject();
+		if(problemObj==null) return;
+		var choiceObjList = makeChoiceObjectList();
+		if(choiceObjList==null) return;
+		return {
+			"problem_vo" : problemObj,
+			"choice_vo_list" : choiceObjList
+		};
+	}
+	
+	function makeShortAnswerDto(){
+		var problemObj = makeProblemObject();
+		if(problemObj==null) return;
+		var answerObjList = makeAnswerObjectList();
+		if(answerObjList == null) return;
+		return {
+			"problem_vo" : problemObj,
+			"answer_vo_list" : answerObjList
+		};
 	}
 	
 	function makeProblemObject(){
@@ -231,9 +322,9 @@ document.addEventListener("DOMContentLoaded", function(){
 		};
 	}
 	
-	function makeChoiceListObject(){
+	function makeChoiceObjectList(){
 		var choiceObjList = [];
-		var choiceTrList = document.querySelectorAll("#choice-container .choice-content");
+		var choiceTrList = document.querySelectorAll("#multiple-choice .choice-content");
 		var choiceCount = 0;
 		var ansCount = 0;
 		choiceTrList.forEach(function(val){
@@ -256,16 +347,25 @@ document.addEventListener("DOMContentLoaded", function(){
 		return choiceObjList;
 	}
 	
-	var registerBtn = document.querySelector("#problem-register-btn");
-	registerBtn.addEventListener("click", function(){
-		var problemObj = makeProblemObject();
-		var choiceObjList = makeChoiceListObject();
-		if(problemObj==null) return;
-		if(choiceObjList==null) return;
-		var dto = {
-			"problem_vo" : problemObj,
-			"choice_vo_list" : choiceObjList
-		};
+	function makeAnswerObjectList(){
+		var answerObjList = [];
+		var answerTrList = document.querySelectorAll("#short-answer .answer-content");
+		var answerCount = 0;
+		answerTrList.forEach(function(val){
+			var answer_content = val.querySelector(".answer-content-text").value.trim();
+			if(answer_content != ""){
+				++answerCount;
+				answerObjList.push({answer_content : answer_content});
+			}
+		});
+		if(answerCount <= 0){
+			alert("적어도 정답은 1개 이상이어야 합니다.");
+			return null;
+		}
+		return answerObjList;
+	}
+	
+	function sendAjaxRegisterBtn(dto, url){
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState === XMLHttpRequest.DONE){
@@ -281,13 +381,12 @@ document.addEventListener("DOMContentLoaded", function(){
 				}
 			}
 		};
-		var url = "problem/multiplechoice";
 		xhr.open("POST", url);
 		xhr.setRequestHeader("content-type", "application/json");
 		xhr.send(JSON.stringify(dto));
-	});
-	
+	}
 });
+
 </script>
 
 

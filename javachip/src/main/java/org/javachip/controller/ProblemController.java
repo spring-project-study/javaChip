@@ -1,14 +1,12 @@
 package org.javachip.controller;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.javachip.domain.MultipleChoiceVO;
 import org.javachip.domain.ProblemVO;
+import org.javachip.domain.ShortAnswerVO;
 import org.javachip.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -36,20 +34,12 @@ public class ProblemController {
 		return mv;
 	}
 	
-	@GetMapping("/multiplechoice")
-	public ModelAndView multipleProblemGet() {
-		ModelAndView mv = new ModelAndView("home");
-		return mv;
-	}
-	
 	@PostMapping(value = "/multiplechoice", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Map<String, Object> multipleProblemPost(@RequestBody Map<String, Object> dto)
-			throws IOException {
+	public Map<String, Object> multipleProblemPost(@RequestBody Map<String, Object> dto) {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		ProblemVO problem_vo = objectMapper.convertValue(dto.get("problem_vo"), ProblemVO.class);
-		// 일단 따라함
 		List<MultipleChoiceVO> choice_vo_list = objectMapper.convertValue(dto.get("choice_vo_list"),
 				TypeFactory.defaultInstance().constructCollectionType(List.class, MultipleChoiceVO.class));
 		
@@ -61,5 +51,30 @@ public class ProblemController {
 			return Collections.singletonMap("result", "fail");
 		}	
 	}
-
+	
+	@PostMapping(value = "/shortanswer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Map<String, Object> shortAnswerPost(@RequestBody Map<String, Object> dto){
+		ObjectMapper objectMapper = new ObjectMapper();
+		ProblemVO problem_vo = objectMapper.convertValue(dto.get("problem_vo"), ProblemVO.class);
+		List<ShortAnswerVO> short_answer_list = objectMapper.convertValue(dto.get("answer_vo_list"),
+				TypeFactory.defaultInstance().constructCollectionType(List.class, ShortAnswerVO.class));
+		
+		problem_vo = problemService.registerShortAnswer(problem_vo, short_answer_list);	
+		if(problem_vo != null) {
+			return Collections.singletonMap("result", "success");
+		}
+		else {
+			return Collections.singletonMap("result", "fail");
+		}	
+	}
 }
+
+
+
+
+
+
+
+
+

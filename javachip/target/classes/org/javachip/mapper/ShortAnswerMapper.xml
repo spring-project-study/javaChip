@@ -6,7 +6,7 @@
 
 	<insert id="insert" useGeneratedKeys="true" keyProperty="answer_id">
 		INSERT INTO tbl_short_answer (problem_id, answer_content) 
-		VALUES (#{problem_id}, #{choice_content})
+		VALUES (#{problem_id}, #{answer_content})
 	</insert>
 	
 </mapper>

@@ -1,19 +1,9 @@
 package org.javachip.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.javachip.domain.MultipleChoiceVO;
-import org.javachip.domain.ProblemVO;
 import org.javachip.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping(path="/problem")
@@ -28,9 +18,9 @@ public class ProblemApiController {
 	 * 
 	 * @RequestBody ProblemVO problem_vo , @RequestBody MultipleChoiceVO
 	 * multipleChoice_vo) throws IOException{ ModelAndView mav = new ModelAndView();
-	 * // °Ô½ÃÆÇÀ¸·Î redirect ÇØ¾ßÇÑ´Ù. //mav.setViewName("redirect:/problem");
-	 * //mav.addObject("something","new"); // ·Î±×ÀÎ ÀÛ¾÷ ÀÌÈÄ ¼öÁ¤ÇØ¾ßÇÑ´Ù.
-	 * //vo.setUser_id("user00"); //vo.setUser_name("À¯Àú00");
+	 * // ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ redirect ï¿½Ø¾ï¿½ï¿½Ñ´ï¿½. //mav.setViewName("redirect:/problem");
+	 * //mav.addObject("something","new"); // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½Ñ´ï¿½.
+	 * //vo.setUser_id("user00"); //vo.setUser_name("ï¿½ï¿½ï¿½ï¿½00");
 	 * //mav.addObject("sucess", problemService.register(vo) ? true : false);
 	 * problem_vo = problemService.register(problem_vo, multipleChoice_vo);
 	 * PrintWriter out = response.getWriter(); out.print(""); out.close(); return
