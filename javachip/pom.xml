@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.javachip</groupId>
 	<artifactId>controller</artifactId>
-	<name>javachip]</name>
+	<name>javachip</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
@@ -137,7 +137,7 @@
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
-		    <version>8.0.18</version>
+		    <version>8.0.19</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bgee.log4jdbc-log4j2</groupId>

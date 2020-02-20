@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -60,5 +59,14 @@ public class ProblemMapperTests {
 				.param("pageNum", "2")
 				.param("amount",  "5"))
 				.andReturn().getModelAndView().getModelMap());
+	public void insertTest() {
+		ProblemVO vo = new ProblemVO();
+		
+		mapper.insert(vo);
+	}
+	
+	//@Test
+	public void getTest() {
+		System.out.println(mapper.get(1));
 	}
 }

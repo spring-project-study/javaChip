@@ -1,5 +1,7 @@
 package org.javachip.mapper;
 
-public interface ShortAnswerMapper {
+import org.javachip.domain.ShortAnswerVO;
 
+public interface ShortAnswerMapper {
+	public int insert(ShortAnswerVO vo);
 }
