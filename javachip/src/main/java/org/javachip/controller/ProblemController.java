@@ -41,7 +41,7 @@ public class ProblemController {
 	@Autowired
 	ProblemService problemService;
 
-	@GetMapping("/list")
+	@GetMapping(value = "/list")
 	public void list(Criteria cri, Model model) {
 		model.addAttribute("list", problemService.getListWithPaging(cri));
 		int total = problemService.getTotal(cri);

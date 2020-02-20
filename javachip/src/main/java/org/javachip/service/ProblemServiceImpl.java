@@ -48,7 +48,7 @@ public class ProblemServiceImpl implements ProblemService{
 
 	@Override
 	public ProblemVO get(Long problem_id) {
-		return problemMapper.select(problem_id);
+		return problemMapper.get(problem_id);
 	}
 
 	@Override
