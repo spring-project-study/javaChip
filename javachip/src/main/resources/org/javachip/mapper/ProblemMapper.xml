@@ -41,8 +41,15 @@
 			</when>
 		</choose>
 	</select>
-	<insert id="insert">
-		insert into tbl_problem (problem_title, problem_content, user_id, user_name, problem_type)
+
+	<select id="get" resultType="org.javachip.domain.ProblemVO">
+		select * 
+		from tbl_problem 
+		where problem_id = #{problem_id}
+	</select>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="problem_id">
+		insert into tbl_problem (problem_title, problem_content, user_id, user_name, problem_type) 
 		values (#{problem_title}, #{problem_content}, #{user_id}, #{user_name}, #{problem_type})
 	</insert>
 	<update id="update">

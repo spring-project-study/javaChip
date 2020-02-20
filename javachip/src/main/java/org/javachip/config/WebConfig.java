@@ -3,7 +3,6 @@ package org.javachip.config;
 import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
